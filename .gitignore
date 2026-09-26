@@ -33,10 +33,11 @@ inputs/
 *.epub
 
 # ==========================================
-# Novel Raw Text (小说原文章节，严禁上传)
+# Raw Novel Texts & Intermediate Outputs (严格规避版权)
 # ==========================================
-# 严格禁止将小说原文正文（outputs/chapters/）上传至仓库
-outputs/chapters/
+# 忽略 outputs/ 整个目录（包括小说原文章节 outputs/chapters/ 与原文提取草稿 outputs/world_raw/）
+# 仅保留清洗提炼后的纯世界书 world_stages/
+outputs/
 
 # ==========================================
 # Scratch / Temporary Working Files
