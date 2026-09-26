@@ -26,12 +26,17 @@ __pycache__/
 htmlcov/
 
 # ==========================================
-# Raw Ebook Binaries & Large Source Files
+# Raw Ebook Binaries & Source Inputs
 # ==========================================
-# 忽略原始EPUB二进制图书文件，保护版权及控制版本库体积
-inputs/eupbs/*.epub
-inputs/epubs/*.epub
+# 忽略原始EPUB二进制图书与输入源文件，保护版权及控制仓库体积
+inputs/
 *.epub
+
+# ==========================================
+# Novel Raw Text (小说原文章节，严禁上传)
+# ==========================================
+# 严格禁止将小说原文正文（outputs/chapters/）上传至仓库
+outputs/chapters/
 
 # ==========================================
 # Scratch / Temporary Working Files

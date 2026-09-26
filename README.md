@@ -1,21 +1,24 @@
-# 《无职转生》语料提取与时间线分阶段世界书构建项目
+# 《无职转生》时间线分阶段世界书（Lorebook）项目
 
-本项目致力于对日本轻小说《无职转生 ～到了异世界就拿出真本事～》（理不尽な孙の手 著）第 1~15 卷进行高精度的文本清洗切分、逐章原生世界设定提取，并构建面向大模型角色扮演（Roleplay / RP）与推演的**全时间线防剧透世界书体系**。
+本项目是针对日本轻小说《无职转生 ～到了异世界就拿出真本事～》（理不尽な孙の手 著）第 1~15 卷构建的**面向大语言模型角色扮演（Roleplay / RP）与推演的专业级分阶段防剧透世界书（Lorebook）**。
+
+> [!IMPORTANT]
+> **版权与内容合规声明**：
+> 本仓库**不包含任何小说原文正文、章节切分或电子书原文件**（`inputs/`、`outputs/chapters/` 均已被 `.gitignore` 严格忽略，仅在本地提取时作为临时数据流）。
+> 仓库核心交付物仅为**基于剧情提炼沉淀的结构化设定字典（JSON Lorebook）与总览索引**。
 
 ---
 
-## 一、项目核心亮点
+## 一、世界书核心特色与规范
 
-1. **201 章全量清洗与插图文本还原**：
-   - 实现了对 15 本原始 EPUB 的脊骨（Spine）遍历、NCX 标题精准对齐、段落与杂质清洗。
-   - 针对第 15 卷中极为关键的插图文字（老鲁迪未来日记第 1~20 页内容：魔石病惨案、自动人偶、艾莉丝之死、六面世界真相），完整识别并自动回填至正文对应位置。
-2. **201 份逐章独立原生设定库（`outputs/world_raw/`）**：
-   - 严格遵循 `prompt/01_world_extract.md` 标准，纯客观事实提取，**每条设定附带逐字原文依据（`原文依据："……"`）**。
-   - 彻底区分“角色主观认知”与“客观事实真相”，不确定信息统一标注 `[存疑]`，实现 100% 零脑补、零超前跨卷剧透。
-3. **分阶段防剧透世界书体系（`world_stages/`）**：
-   - 遵循 `prompt/02_world_merge.md` 规范，同一实体在不同时期严格按时间线切片拆条。
-   - **字数硬约束**：每个条目的设定描述（`content`）均经过脚本严格校验在 **50~150 汉字**以内，剔除修饰语句，保留高密度硬核设定。
-   - **元数据完备**：包含 `keywords`（穷举本名/别名/外号/触发词）、`timeline`、`priority`（核心/次要）、`category`、`reveal_arc`、`spoiler`、`source_chapters` 等字段。
+1. **分阶段防剧透切片（Stage Slicing）**：
+   - 彻底打破传统世界书“单一静态全剧透条目”的缺陷，针对角色随剧情剧烈变化（如：从幼年神童、狂犬剑客、ED低谷、魔法大学新婚、迷宫断臂，到魔导铠决战龙神）在不同阶段独立拆条。
+   - RP 运行推演时严格按当前扮演时期加载对应阶段文件，彻底杜绝超前剧透与时间线穿帮。
+2. **纯粹硬核客观设定（Grounding & Anti-Hallucination）**：
+   - 基于原著全部 201 章节严密考据与反转甄别，清晰区分“角色主观误解”与“客观世界真相”。
+3. **字数与元数据硬约束**：
+   - **内容字数约束**：每个条目的核心设定（`content`）均严格校验在 **50~150 汉字**以内，去除冗余修饰，确保大模型上下文高效利用。
+   - **触发词穷举**：每个条目的 `keywords` 包含角色/地点的本名、别名、旧称、他人称呼及常见代称，确保在各种交互场景下稳定触发。
 
 ---
 
@@ -39,21 +42,11 @@
 
 ```
 MushokuTensei/
-├── .gitignore                      # Git 忽略配置（忽略虚拟环境、二进制 EPUB、临时测试文件等）
+├── .gitignore                      # Git 忽略配置（忽略原文正文、二进制 EPUB、环境与缓存）
 ├── README.md                       # 项目总体说明与使用指南
-├── convert_all.py                  # EPUB 批量转 Markdown 入口包装脚本
+├── convert_all.py                  # 本地 EPUB 批量转 Markdown 入口包装脚本
 │
-├── inputs/                         # 原始数据输入目录
-│   └── eupbs/                      # 原始轻小说 EPUB 电子书（共 15 卷，Git 忽略）
-│
-├── outputs/                        # 项目中间产物与全量输出
-│   ├── chapters/                   # EPUB 切章转换后的 Markdown 正文库（201 章）
-│   │   ├── 01/ ~ 15/               # 每卷独立目录（含 convert_log.md 转换日志）
-│   ├── world_raw/                  # 逐章独立提取的原生设定库（201 份标准文档）
-│   │   ├── 01/ ~ 15/               # 每章独立 markdown，包含十大标准板块及原文依据
-│   └── world_stages/               # 自动归并验证后的世界书产物镜像备份
-│
-├── world_stages/                   # 【核心交付成果】分阶段 RP 世界书正式发布目录
+├── world_stages/                   # 【核心交付资产】分阶段 RP 世界书正式发布目录
 │   ├── shared_world.json           # 跨阶段通用底座（26 条）
 │   ├── stage1_childhood.json       # 阶段一：幼年篇（16 条）
 │   ├── stage2_demon_continent.json # 阶段二：魔大陆长征篇（36 条）
@@ -62,45 +55,27 @@ MushokuTensei/
 │   ├── stage5_dragon_god.json      # 阶段五：空中要塞与决战龙神篇（25 条）
 │   └── world_summary.md            # 人类可读的世界书条目总览与索引
 │
-├── prompt/                         # 标准化工作工作流与提示词规约
+├── prompt/                         # 规范规约文档（标准提取与合并提示词设计）
 │   ├── 00_tool_create.md           # 章节切分与正文提取规约
 │   ├── 01_world_extract.md         # 逐章原生世界设定提取标准
 │   ├── 02_world_merge.md           # 分阶段世界书归并与格式规范
-│   ├── 03_character_data.md        # 目标角色（鲁迪乌斯）语料提取规约
+│   ├── 03_character_data.md        # 目标角色语料提取规约
 │   └── 04_chatacter_card.md        # 角色卡生成与 Tavern 适配规约
 │
-└── tools/                          # 核心脚本与自动化流水线
-    ├── convert_all.py              # EPUB 深度解析、正文/插图判别与 Markdown 导出引擎
-    ├── vol15_diary_data.py         # 第 15 卷老鲁迪日记插图文字OCR还原数据
-    └── build_final_stages.py       # 世界书分阶段自动化构建与 50~150 字约束校验引擎
+├── tools/                          # 本地开发与数据流水线脚本
+│   ├── convert_all.py              # EPUB 深度解析与清洗导出引擎
+│   ├── vol15_diary_data.py         # 第 15 卷老鲁迪日记插图文字还原辅助数据
+│   └── build_final_stages.py       # 世界书分阶段自动化构建与 50~150 字约束校验引擎
+│
+├── inputs/                         # [本地工作目录 · Git 忽略] 原始图书存放处
+└── outputs/                        # [本地工作目录 · Git 忽略] 本地生成的中间正文与提取草稿
+    ├── chapters/                   # 本地切章产物（不进入仓库）
+    └── world_raw/                  # 本地逐章提取草稿（不进入仓库）
 ```
 
 ---
 
-## 四、快速上手与使用指南
-
-### 1. 环境准备
-推荐使用 Python 3.10+，安装所需依赖：
-```bash
-pip install ebooklib beautifulsoup4 lxml
-```
-
-### 2. 重新转换 EPUB 电子书为 Markdown
-若放入新的 EPUB 电子书或需要重新生成切章正文：
-```bash
-python convert_all.py inputs/eupbs outputs/chapters
-```
-
-### 3. 构建与校验分阶段世界书
-若对设定或条目描述进行了调整，可随时运行自动化构建与硬性约束校验脚本：
-```bash
-python tools/build_final_stages.py
-```
-> **校验机制**：脚本会自动检查所有 JSON 条目是否满足必需字段（`keywords`, `content`, `timeline`, `priority`, `category` 等），并对每个条目的 `content` 字符串进行字符计数，确保严格位于 **50 ~ 150 字** 区间，超限将自动报警并阻断输出。
-
----
-
-## 五、在角色扮演（RP）与 AI Agent 中的挂载规范
+## 四、在角色扮演（RP）与 AI Agent 中的挂载规范
 
 在进行基于时间线的大模型角色扮演（如 SillyTavern、Dify、LangChain、Claude/GPT 对话系统）时，为杜绝时间线串味与超前剧透，**严禁一次性加载所有阶段**。
 
@@ -125,10 +100,10 @@ graph TD
 
 ---
 
-## 六、下一步工作计划（Roadmap）
+## 五、构建与校验脚本
 
-- [x] **Phase 1**：1~15 卷 EPUB 清洗切章与插图文字还原（完成，201 章）
-- [x] **Phase 2**：1~15 卷逐章原生世界设定提取（完成，201 份）
-- [x] **Phase 3**：分阶段防剧透世界书构建与 50~150 字约束校验（完成，158 条）
-- [ ] **Phase 4**：依据 [`prompt/03_character_data.md`](prompt/03_character_data.md)，对核心角色（鲁迪乌斯、希露菲、洛琪希、艾莉丝）进行逐章台词与行为语料高精提取。
-- [ ] **Phase 5**：依据 [`prompt/04_chatacter_card.md`](prompt/04_chatacter_card.md)，按时间线生成适配 SillyTavern / Tavern 的分阶段高仿真角色卡。
+若对条目设定或关键词进行了扩展调整，可通过以下命令重新校验并生成所有发布阶段世界书：
+```bash
+python tools/build_final_stages.py
+```
+> **自动合规检查**：脚本将自动验证每个 JSON 条目的必备字段，并确保每个条目的 `content` 纯文本严格落在 **50 ~ 150 汉字** 区间之内。
