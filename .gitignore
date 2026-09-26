@@ -1,0 +1,54 @@
+# ==========================================
+# Python Virtual Environments
+# ==========================================
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# Python Bytecode and Cache
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==========================================
+# Testing & Linting
+# ==========================================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ==========================================
+# Raw Ebook Binaries & Large Source Files
+# ==========================================
+# 忽略原始EPUB二进制图书文件，保护版权及控制版本库体积
+inputs/eupbs/*.epub
+inputs/epubs/*.epub
+*.epub
+
+# ==========================================
+# Scratch / Temporary Working Files
+# ==========================================
+# 忽略临时调试脚本、临时日志与试验数据文件
+scratch/
+*.tmp
+*.log
+
+# ==========================================
+# OS & Editor Generated Files
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
