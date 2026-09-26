@@ -60,7 +60,7 @@ MushokuTensei/
 │   ├── 01_world_extract.md         # 逐章原生世界设定提取标准
 │   ├── 02_world_merge.md           # 分阶段世界书归并与格式规范
 │   ├── 03_character_data.md        # 目标角色语料提取规约
-│   └── 04_chatacter_card.md        # 角色卡生成与 Tavern 适配规约
+│   └── 04_character_card.md        # 角色卡生成与 Tavern 适配规约
 │
 ├── tools/                          # 本地开发与数据流水线脚本
 │   ├── convert_all.py              # EPUB 深度解析与清洗导出引擎
