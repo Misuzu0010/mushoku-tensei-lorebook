@@ -135,4 +135,4 @@ graph TD
 1. 查阅 [`prompt/template/WORKFLOW_SUMMARY.md`](prompt/template/WORKFLOW_SUMMARY.md) 获取端到端五步流水线详解；
 2. 参照 [`prompt/template/`](prompt/template/) 中的标准化模板建立自己的提示词工程；
 3. 使用 `tools/convert_all.py` 与 `tools/extract_image_text.py` 准备规范文本资产；
-4. 运行 `tools/build_final_stages.py` 实行字数校验与世界书自动化构建。
+4. 可参照 `tools/build_final_stages.py` 的构建过程实行字数校验与世界书自动化构建，参数与变量视具体文件为主。
